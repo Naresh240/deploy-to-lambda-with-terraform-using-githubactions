@@ -5,19 +5,47 @@
 ## Pre-Requisite
 
 ```bash
-1. Create Lambda Function with the name of ```nodejs-deploy``` and add role to communicate with API Gateway
-2. Create API Gateway 
-3. Create Github Action Pipeline
-4. Add secrets under GIT REPO secrets (AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY)
+1. Create S3 Bucket
+2. Add secrets under GIT REPO secrets (AWS_ACCESS_KEY_ID & AWS_SECRET_ACCESS_KEY)
 ```
 
 ## Create secrets under git repository
 
-![image](https://user-images.githubusercontent.com/58024415/210535109-a04c83db-5716-4184-bed3-3605b7e7f509.png)
+![image](https://user-images.githubusercontent.com/58024415/211041339-5347ac02-e959-41af-945e-c864670d2263.png)
 
-## Attach API GATEWAY to Lambda as trigger
+## Create S3 Bucket with AWSCLI command to keep terraform state files and Application Zip files
 
-![image](https://user-images.githubusercontent.com/58024415/210534664-ca07e633-af3b-456b-a54b-5d99365ea5fa.png)
+```bash
+aws s3api create-bucket \
+    --bucket nodejsartifactsdeploy \
+    --region us-east-1
+```
+
+## Terraform plan and apply 
+Create new branch and update terraform directory and update environment variable ```Terraform_Operation``` as ```Apply```
+````Note:```
+  1. If we push to new branch it will be done only plan
+  2. If we Raise PR to master branch job will be run and it will be apply/destroy
+  
+1. Create new branch and updated terraform directory
+
+![image](https://user-images.githubusercontent.com/58024415/211041584-ed712d0a-b459-4686-8dfa-e8fbdf304601.png)
+
+2. Whenever we run commit pipeline will be run under Actions
+
+![image](https://user-images.githubusercontent.com/58024415/211041906-a85cd7b6-58df-4215-a968-5712cc92eb75.png)
+
+3. Here terraform plan only will be happen for us
+
+![image](https://user-images.githubusercontent.com/58024415/211041997-338d8002-0b3d-4fdb-a1a4-510051ff3e76.png)
+
+4. Raise Pull-Request
+
+![image](https://user-images.githubusercontent.com/58024415/211042180-8ad32e13-714c-4468-970e-fa50d672e833.png)
+
+5. After accepting PR Terraform apply will be happen
+
+![image](https://user-images.githubusercontent.com/58024415/211042556-709be3f4-7aad-4552-9a6e-c33c46607797.png)
 
 ## Check application output
 
