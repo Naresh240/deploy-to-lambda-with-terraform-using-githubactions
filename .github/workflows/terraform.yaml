@@ -13,7 +13,6 @@ on:
 jobs:
   Build_Atifact:
     name: 'Build Artifact and Push to S3'
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest 
     steps:
     #Using versioned actions 
@@ -47,8 +46,8 @@ jobs:
         aws s3 cp deploy.zip s3://nodejsartifactsdeploy/deploy.zip
   terraform:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    needs: Build_Atifact
+    needs: Build_Atifact    
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     defaults:
       run:
         working-directory: ./terraform   
@@ -79,6 +78,6 @@ jobs:
       if: steps.plan.outcome == 'failure'
       run: exit 1
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/master' && github.event_name == 'push' && github.event_name == 'pull_request'
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push' || github.event.pull_request.merged == 'true'
       run: |
         terraform $Terraform_Operation -auto-approve -input=false
