@@ -1,7 +1,7 @@
 name: Deploy_TO_Lambda_Using_Terraform
 
 env:
-  Terraform_Operation: apply
+  Terraform_Operation: destroy
 on: 
   push:
     paths:
@@ -78,6 +78,6 @@ jobs:
       if: steps.plan.outcome == 'failure'
       run: exit 1
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/terraform' && github.event_name == 'push' || github.event_name == 'pull_request'
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push' && github.event_name == 'pull_request'
       run: |
         terraform $Terraform_Operation -auto-approve -input=false
