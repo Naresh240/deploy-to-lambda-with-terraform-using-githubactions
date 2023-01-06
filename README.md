@@ -27,6 +27,7 @@ Create new branch and update terraform directory and update environment variable
   1. If we push to new branch it will be done only plan
   2. If we Raise PR to master branch job will be run and it will be apply/destroy
   
+  
 1. Create new branch and updated terraform directory
 
 ![image](https://user-images.githubusercontent.com/58024415/211041584-ed712d0a-b459-4686-8dfa-e8fbdf304601.png)
